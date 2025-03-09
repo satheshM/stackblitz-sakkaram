@@ -11,7 +11,7 @@ import {
   FaTimesCircle,
 } from 'react-icons/fa';
 import { useAuth } from '../context/AuthContext';
-import { GetUserBookings } from '../api/Bookings';
+import { GetUserBookings,submitReview as postReview } from '../api/Bookings';
 
 const Booking = () => {
   const { user } = useAuth();
@@ -167,21 +167,42 @@ const Booking = () => {
   };
 
   // Handle submitting a review
-  const submitReview = (bookingId, rating, feedback) => {
-    // Update the booking with the review
-    const updatedPast = bookings.past.map((booking) =>
-      booking.id === bookingId
-        ? { ...booking, rating, feedback, status: 'Reviewed' }
-        : booking
-    );
-
-    setBookings({
-      ...bookings,
-      past: updatedPast,
-    });
-
-    setSelectedBooking(null);
+ 
+  const submitReview = async (bookingId, rating, feedback) => {
+    try {
+        const payload ={
+    bookingId:bookingId,
+     rating:rating,
+     status: "Reviewed",
+      feedback:feedback}
+      // Make API call to submit the review
+      const response = await postReview(payload )
+  
+      if (!response.ok) {
+        throw new Error("Failed to submit review");
+      }
+  
+      const result = await response.json();
+  
+      // Update the booking with the review if API call is successful
+      const updatedPast = bookings.past.map((booking) =>
+        booking.id === bookingId
+          ? { ...booking, rating, feedback, status: "Reviewed" }
+          : booking
+      );
+  
+      setBookings({
+        ...bookings,
+        past: updatedPast,
+      });
+  
+      setSelectedBooking(null);
+      console.log("Review submitted successfully:", result);
+    } catch (error) {
+      console.error("Error submitting review:", error.message);
+    }
   };
+  
 
   // Get status badge color
   const getStatusColor = (status) => {

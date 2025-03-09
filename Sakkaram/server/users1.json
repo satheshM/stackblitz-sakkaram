@@ -23,6 +23,14 @@
     "name": "Narayanan",
     "phone": "99876524356",
     "address": "Dharmapuri",
-    "idNumber": "686754765765"
+    "idNumber": "686754765765",
+    "idType": "Aadhaar"
+  },
+  {
+    "id": "6c667699-2103-425a-92fb-ecf7d12bba35",
+    "email": "test@gmail.com",
+    "password": "$2b$10$Z6WIiBFEVgmBn0VGdHxJV.NCRouCzXS2CHPqYfgsZ8EaobrBKzxW2",
+    "role": "vehicle_owner",
+    "createdAt": 2025
   }
 ]

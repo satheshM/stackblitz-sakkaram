@@ -34,9 +34,10 @@ const Signup = () => {
     
     try {
       // Register the user
-      const userData = await registerUser(email, password, role);
+      const response = await registerUser(email, password, role);
+      const userData = await response
       
-      if (userData) {
+      if (response.status === 200) {
         // Log the user in after successful registration
         login(userData);
         navigate("/");

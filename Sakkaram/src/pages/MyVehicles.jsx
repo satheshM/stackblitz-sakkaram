@@ -148,7 +148,7 @@ const MyVehicles = () => {
     try {
       const response = await addVehicleAPI(newVehicleData); // Call the API function
 
-      if (response.status === 200) {
+      if (response.status === 201) {
         const savedVehicle = await response.json();
 
         setVehicles([...vehicles, savedVehicle]); // Update state with new vehicle

@@ -657,6 +657,31 @@ app.patch('/api/owner/bookings/status', authenticateToken, (req, res) => {
   });
 });
 
+
+//Review from Farmer
+app.patch('/api/bookings/submitReview', authenticateToken, (req, res) => {
+  const { bookingId, rating, feedback,status } = req.body;
+
+  let bookings = readBookings();
+  const bookingIndex = bookings.findIndex((b) => b.id === bookingId);
+
+  if (bookingIndex === -1) {
+    return res.status(404).json({ message: 'Booking not found' });
+  }
+  if (bookings[bookingIndex].farmerId !== req.user.id) {
+    return res.status(403).json({ message: 'Unauthorized' });
+  }
+
+  bookings[bookingIndex].feedback = feedback;
+  bookings[bookingIndex].rating = rating;
+  bookings[bookingIndex].status = status;
+  writeBookings(bookings);
+  res.json({
+    message: 'Succesfully Reviewed',
+    // booking: bookings[bookingIndex],
+  });
+});
+
 // 🔹 Cancel Booking (Only by Farmer)
 app.delete('/api/bookings/:id', authenticateToken, (req, res) => {
   let bookings = readBookings();
